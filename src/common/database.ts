@@ -53,8 +53,19 @@ const commonResources: ResourceEntry[] = [
     { fileId: 0xd8ac, type: ResourceType.Dmsg,             description: 'Job Names (Short)' }, // - / 2
 
     // Localized resources
-    { fileId: 0x9A76,  type: ResourceType.ChunkedResource, description: 'Resource - <Unknown>' }, // 0
-    { fileId: 0x9A75,  type: ResourceType.ChunkedResource, description: 'Resource - <Unknown>' }, // 1
+    { fileId:      0,  type: ResourceType.ChunkedResource, description: 'Resource - Global Resources' },
+    { fileId:      1,  type: ResourceType.ChunkedResource, description: 'Resource - UI Resources (JP, Old)' },
+    { fileId:     78,  type: ResourceType.ChunkedResource, description: 'Resource - UI Resources (EN, Old)' },
+    { fileId:  39532,  type: ResourceType.ChunkedResource, description: 'Resource - UI Resources (JP)' }, // 0 (JP)
+    { fileId:  39542,  type: ResourceType.ChunkedResource, description: 'Resource - UI Resources (EN)' }, // 0 (EN)
+    { fileId:  55746,  type: ResourceType.ChunkedResource, description: 'Resource - UI Resources (DE)' }, // 0 (DE)
+    { fileId:  56166,  type: ResourceType.ChunkedResource, description: 'Resource - UI Resources (FR)' }, // 0 (FR)
+    { fileId:      2,  type: ResourceType.ChunkedResource, description: 'Resource - Title Screen (JP, Old)' },
+    { fileId:     79,  type: ResourceType.ChunkedResource, description: 'Resource - Title Screen (EN, Old)' },
+    { fileId:  39533,  type: ResourceType.ChunkedResource, description: 'Resource - Title Screen (JP)' }, // 1 (JP)
+    { fileId:  39541,  type: ResourceType.ChunkedResource, description: 'Resource - Title Screen (EN)' }, // 1 (EN)
+    { fileId:  55745,  type: ResourceType.ChunkedResource, description: 'Resource - Title Screen (DE)' }, // 1 (DE)
+    { fileId:  56165,  type: ResourceType.ChunkedResource, description: 'Resource - Title Screen (FR)' }, // 1 (FR)
     { fileId: 0xD8AD,  type: ResourceType.Dmsg,         description: '<Unknown>' }, // 2 / 6
     { fileId: 0xD8AE,  type: ResourceType.Dmsg,         description: '<Unknown>' }, // 3 / 1
     { fileId: 0xD8AB,  type: ResourceType.Dmsg,         description: 'Job Names' }, // 4 / 3
