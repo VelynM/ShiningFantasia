@@ -2,7 +2,7 @@ import { lsb8, lsb16, lsb24, lsb32 } from '../bytes';
 import { decodeString } from '../string';
 
 function expand4to8(x: number): number {
-    return ((x * 255) / 15);
+    return ((Math.min(7, x) * 255) / 15);
 }
 
 function expand5to16(x: number): number {
@@ -25,6 +25,7 @@ export class Bmp2 {
     textureName: string;
     width: number;
     height: number;
+    flags: number;
 
     bitsPerPixel: number;
     paletteBitsPerPixel: number;
@@ -84,8 +85,6 @@ export class Bmp2 {
 
             textureOffset = offset;
             textureSize = bitsPerPixel * width * height / 8;
-
-            offset += textureSize;
         }
 
         if (isCompressed && offset < b.length - 4) {
@@ -94,10 +93,12 @@ export class Bmp2 {
             if (fourCC >= 0x44585431 && fourCC <= 0x44585435) {
                 offset += 4;
 
+                textureSize = 0;
                 compressedTextureSize = lsb32(b, offset + 0);
                 UnknownDxt1 = lsb32(b, offset + 4);
                 offset += 8;
 
+                textureOffset = 0;
                 compressedTextureOffset = offset;
 
                 if (fourCC == 0x44585431) {
@@ -107,8 +108,6 @@ export class Bmp2 {
                 } else if (fourCC == 0x44585434 || fourCC == 0x44585435) {
                     compressedTextureSize = 16 * width * height / 16;
                 }
-
-                offset += compressedTextureSize;
             } else {
                 // Not actually compressed; nothing to do.
                 fourCC = 0;
@@ -119,6 +118,7 @@ export class Bmp2 {
 
         this.width = width;
         this.height = height;
+        this.flags = flags;
 
         this.bitsPerPixel = bitsPerPixel;
         this.paletteBitsPerPixel = paletteBitsPerPixel;
@@ -490,7 +490,7 @@ export class Bmp2 {
     }
 
     getRGBABuffer() :  Uint8ClampedArray | null {
-        if (this.compressedTexture && !this.palette/*Until the below is complete*/) {
+        if (this.compressedTexture) {
             return this.decompressTexture();
         }
 
