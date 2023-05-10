@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 
-import { ItemDatabase } from '../common/resources/Item';
+import { ItemDatabase } from '../common/resources/item';
 
 if (process.argv.length != 5) {
     console.error('Incorrect command line arguments!');

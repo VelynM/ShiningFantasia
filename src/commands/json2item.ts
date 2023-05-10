@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 
-import { Item, exportDat } from '../common/resources/Item';
+import { Item, exportDat } from '../common/resources/item';
 
 ///
 // DSP enum names
