@@ -96,6 +96,10 @@ const ItemFieldTypes: Record<string, ItemFieldType> = {
 
 export class Item {
     id: number;
+
+    // Should type be deprecated? Or should it be kept as an informative marker?
+    // Using id for decode and type for encode was confusing, so encode was switched to use id.
+    // Consider adding type checking and verifying that all items in a dat are of the same type.
     type: ItemType;
 
     debug?: string;
@@ -899,7 +903,8 @@ function decodeItem(b: Buffer): Item {
 }
 
 function encodeItem(b: Buffer, item: Item) {
-    return itemConstructors[item.type].encode(b, item);
+    const itemType = getItemType(item.id);
+    return itemConstructors[itemType].encode(b, item);
 }
 
 export class ItemDatabase extends Resource {
