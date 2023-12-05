@@ -4,6 +4,11 @@ import { Resource } from './resource';
 import { decodeString } from '../string';
 
 import { Bmp2 } from './bmp2';
+import { Meb } from './meb';
+import { Msb } from './msb';
+
+type ResourceConstructor = new (b: Buffer) => Resource;
+type ResourceConstructorOrNull = ResourceConstructor | null;
 
 export enum ChunkedResourceType {
     Terminate = 0,
@@ -205,9 +210,7 @@ export const ChunkedResourceTypeNames = [
     "Max",
 ];
 
-type Constructor<T = {}> = new (...args: any[]) => T;
-type ResourceConstructorEntry = Constructor<Resource> | null;
-const resourceConstructors: ResourceConstructorEntry[] = [
+const resourceConstructors: ResourceConstructorOrNull[] = [
     null, // "Terminate",
     null, // "Rmp",
     null, // "Rmw",
@@ -256,8 +259,8 @@ const resourceConstructors: ResourceConstructorEntry[] = [
     null, // "Wsd",
     null, // "Mmb",
     null, // "Weather",
-    null, // "Meb",
-    null, // "Msb",
+    Meb, // "Meb",
+    Msb, // "Msb",
     null, // "Med",
     null, // "Msh",
     null, // "Ysh",
@@ -326,12 +329,12 @@ export class ChunkedResource {
             const name = decodeString(b.subarray(offset, offset + 4));
 
             const header0 = lsb32(b, offset + 4);
-            const header1 = lsb32(b, offset + 8);
-            const header2 = lsb32(b, offset + 12);
+            const _header1 = lsb32(b, offset + 8);
+            const _header2 = lsb32(b, offset + 12);
 
             const type = header0 & 0x7f;
             const length = (((header0 & 0xfffffff) >> 7) << 4) - 16;
-            const unknown = (header0 >> 28);
+            const _unknown = (header0 >> 28);
 
             if (b.length - offset < length + 16) {
                 throw new Error('Corrupt Resource DAT');

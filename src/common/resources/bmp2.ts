@@ -1,5 +1,6 @@
 import { lsb8, lsb32 } from '../bytes';
 import { decodeString } from '../string';
+import { Resource } from './resource';
 
 function expand4to8(x: number): number {
     return ((Math.min(7, x) * 255) / 15);
@@ -21,7 +22,7 @@ function int2to1(a: number, b: number): number {
     return ((2 * a + b) / 3);
 }
 
-export class Bmp2 {
+export class Bmp2 extends Resource {
     textureName: string;
     width: number;
     height: number;
@@ -36,6 +37,8 @@ export class Bmp2 {
     compressedTexture: Buffer | null;
 
     constructor(b: Buffer) {
+        super();
+
         const versionFlags = lsb8(b, 0);
         const isCompressed = versionFlags >> 7;
         const version = (versionFlags >> 4) & 7;

@@ -1,4 +1,4 @@
-import { lsb16, lsb24, lsb32 } from '../bytes';
+import { lsb24, lsb32 } from '../bytes';
 import { decodeEventString } from '../string';
 import { Resource } from './resource';
 
