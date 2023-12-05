@@ -4,10 +4,12 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
+const { EsbuildPlugin } = require('esbuild-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const { VueLoaderPlugin } = require('vue-loader');
 
@@ -25,7 +27,7 @@ function getHtmlPlugins(production, entries) {
     return plugins;
 }
 
-function getTarget({ production, target, entry, output, templates, tsconfig }) {
+function getTarget({ production, target, entry, output, templates, tsconfig, useESBuildLoader, useESBuildMinify }) {
     const t = {
         target,
         mode: production ? 'production' : 'development',
@@ -48,15 +50,27 @@ function getTarget({ production, target, entry, output, templates, tsconfig }) {
             }
         },
         module: {
-            rules: [{
-                    test: /\.tsx?$/i,
-                    loader: 'ts-loader',
-                    options: {
-                        appendTsSuffixTo: [/\.vue$/],
-                        configFile: tsconfig,
+            rules: [
+                useESBuildLoader ?
+                    {
+                        test: /\.tsx?$/i,
+                        loader: 'esbuild-loader',
+                        options: {
+                            loader: 'ts',
+                            target: 'es2022',
+                        },
+                        exclude: /node_modules/
+                    }
+                :
+                    {
+                        test: /\.tsx?$/i,
+                        loader: 'ts-loader',
+                        options: {
+                            appendTsSuffixTo: [/\.vue$/],
+                            configFile: tsconfig,
+                        },
+                        exclude: /node_modules/,
                     },
-                    exclude: /node_modules/,
-                },
                 {
                   test: /\.vue$/i,
                   loader: 'vue-loader',
@@ -90,6 +104,10 @@ function getTarget({ production, target, entry, output, templates, tsconfig }) {
                     type: 'asset/source',
                 },
                 {
+                    test: /\.(bin)$/,
+                    type: 'asset/inline',
+                },
+                {
                     test: /\.js$/i,
                     enforce: 'pre',
                     use: [
@@ -116,6 +134,26 @@ function getTarget({ production, target, entry, output, templates, tsconfig }) {
             '@store': path.resolve(__dirname, './src/renderer/store'),
             '@views': path.resolve(__dirname, './src/renderer/views'),
         };
+
+        if (production) {
+            t.optimization.minimize = true
+            t.optimization.minimizer = [
+                useESBuildMinify ?
+                    new EsbuildPlugin({
+                        target: 'es2022',
+                        css: true,
+                    })
+                :
+                    new TerserPlugin({
+                        extractComments: false,
+                        terserOptions: {
+                            format: {
+                                comments: false,
+                            },
+                        },
+                    }),
+            ];
+        }
 
         t.plugins = [
             new webpack.ProgressPlugin(),
@@ -150,6 +188,8 @@ function getTarget({ production, target, entry, output, templates, tsconfig }) {
 module.exports = function (env, argv) {
     const production = argv.mode == 'production';
     const distBuild = env['dist-build'];
+    const useESBuildLoader = env['use-esbuild'];
+    const useESBuildMinify = env['use-esbuild-minify'];
 
     const targets = [
         // clear out the build directory
@@ -193,7 +233,9 @@ module.exports = function (env, argv) {
             target: 'node',
             entry: {index: `./src/commands/${c}.ts`},
             output: {path: path.resolve(__dirname, `./build/commands/${c}`)},
-            tsconfig: path.resolve(__dirname, 'src/commands/tsconfig.json')
+            tsconfig: path.resolve(__dirname, 'src/commands/tsconfig.json'),
+            useESBuildLoader,
+            useESBuildMinify,
         }));
 
     return targets.concat([
@@ -203,7 +245,9 @@ module.exports = function (env, argv) {
             entry: {main: './src/main/main.ts'},
             output: {path: path.resolve(__dirname, './build/main/')},
             templates: null,
-            tsconfig: path.resolve(__dirname, 'tsconfig.json')
+            tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+            useESBuildLoader,
+            useESBuildMinify,
         }),
         getTarget({
             production,
@@ -211,7 +255,9 @@ module.exports = function (env, argv) {
             entry: {preload: './src/preload/preload.ts'},
             output: {path: path.resolve(__dirname, './build/preload/')},
             templates: null,
-            tsconfig: path.resolve(__dirname, 'src/preload/tsconfig.json')
+            tsconfig: path.resolve(__dirname, 'src/preload/tsconfig.json'),
+            useESBuildLoader,
+            useESBuildMinify,
         }),
         getTarget({
             production,
@@ -227,7 +273,9 @@ module.exports = function (env, argv) {
                     filename: 'index.html',
                 }
             ],
-            tsconfig: path.resolve(__dirname, 'src/renderer/tsconfig.json')
+            tsconfig: path.resolve(__dirname, 'src/renderer/tsconfig.json'),
+            useESBuildLoader,
+            useESBuildMinify,
         }),
 
         ...commands,
