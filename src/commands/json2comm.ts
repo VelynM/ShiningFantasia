@@ -257,6 +257,7 @@ for (let i = 0; i < commJson.length; i++) {
             }
             break;
 
+            case 'recastId':
             case '_08': {
                 b.writeInt16LE(v as number, 0x08);
             }

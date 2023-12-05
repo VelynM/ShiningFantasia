@@ -142,7 +142,9 @@ for (let i = 0; i < menuRes.resources.length; i++) {
                 obj.tpModifierValues[l] = b.readInt16LE(0x16 + l * 2);
             }
 
-            obj._08 = b.readInt16LE(0x08);
+            // old: _08
+            obj.recastId = b.readInt16LE(0x08);
+
             obj._0E = b.readInt8(0x0E);
             obj._14 = b.readInt8(0x14);
             obj._1C = b.readInt16LE(0x1C);
