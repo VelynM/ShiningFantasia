@@ -103,7 +103,7 @@ export enum ChunkedResourceType {
     Unknown1 = 94,
     Unknown2 = 95,
     Max = 96,
-};
+}
 
 export const ChunkedResourceTypeNames = [
     "Terminate",

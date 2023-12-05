@@ -40,7 +40,7 @@ export enum SpecialCode {
 
 	NEWLINE,
 	TAB,
-};
+}
 
 function MakeSpecial(code: SpecialCode, bytes: number): number {
 	return -((bytes << 16) | code);

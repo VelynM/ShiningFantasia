@@ -782,7 +782,7 @@ if (process.argv.length === 4) {
             throw new Error('Corrupt Resource DAT');
         }
 
-        let resBuf = b.subarray(offset, offset + length + 16);
+        const resBuf = b.subarray(offset, offset + length + 16);
         offset += 16;
         offset += length;
 

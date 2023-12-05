@@ -1,4 +1,4 @@
-import { lsb8, lsb16, lsb24, lsb32 } from '../bytes';
+import { lsb8, lsb32 } from '../bytes';
 import { decodeString } from '../string';
 
 function expand4to8(x: number): number {
@@ -58,7 +58,7 @@ export class Bmp2 {
         let compressedTextureOffset = 0;
         let compressedTextureSize = 0;
         let fourCC = 0;
-        let UnknownDxt1 = 0;
+        let _UnknownDxt1 = 0;
         let flags = 0;
 
         let offset = 57;
@@ -95,7 +95,7 @@ export class Bmp2 {
 
                 textureSize = 0;
                 compressedTextureSize = lsb32(b, offset + 0);
-                UnknownDxt1 = lsb32(b, offset + 4);
+                _UnknownDxt1 = lsb32(b, offset + 4);
                 offset += 8;
 
                 textureOffset = 0;
