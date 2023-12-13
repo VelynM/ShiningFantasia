@@ -1,0 +1,43 @@
+{
+    "indentWidth": 4,
+    "lineWidth": 1000,
+    "newLineKind": "auto",
+    "useTabs": false,
+    "typescript": {
+        "semiColons": "always",
+        "quoteStyle": "preferSingle",
+        "quoteProps": "consistent",
+        "newLineKind": "lf",
+        "useBraces": "always",
+        "bracePosition": "sameLineUnlessHanging",
+        "singleBodyPosition": "nextLine",
+        "nextControlFlowPosition": "sameLine",
+        "trailingCommas": "onlyMultiLine",
+        "operatorPosition": "nextLine",
+        "preferHanging": false,
+        "preferSingleLine": false,
+        "arrowFunction.useParentheses": "preferNone",
+        "conditionalExpression.linePerExpression": false,
+        "functionExpression.spaceAfterFunctionKeyword": true,
+        "constructorType.spaceAfterNewKeyword": true,
+        "constructSignature.spaceAfterNewKeyword": true,
+        "module.sortImportDeclarations": "maintain",
+        "module.sortExportDeclarations": "maintain",
+        "exportDeclaration.sortNamedExports": "maintain",
+        "importDeclaration.sortNamedImports": "maintain",
+        "importDeclaration.forceSingleLine": false,
+        "importDeclaration.forceMultiLine": false
+    },
+    "json": {
+        "trailingCommas": "never"
+    },
+    "excludes": [
+        "**/node_modules",
+        "build/**",
+        "dist/**"
+    ],
+    "plugins": [
+        "https://plugins.dprint.dev/typescript-0.88.7.wasm",
+        "https://plugins.dprint.dev/json-0.19.1.wasm"
+    ]
+}
