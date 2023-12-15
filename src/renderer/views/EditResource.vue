@@ -62,7 +62,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { loadResource } from '@common/datloader';
+import { loadResource } from '../datloader';
 import { ResourceEntry, ResourceType } from '@common/database';
 import { Resource } from '@common/resources';
 

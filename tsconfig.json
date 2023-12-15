@@ -1,21 +1,20 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": [
-      "ES2022",
-      "dom"
+      "ES2022"
     ],
-    "baseUrl": "src/main",
+    "baseUrl": "src/main"
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts"
+    "src/common/**/*.ts",
+    "src/common/**/*.d.ts"
   ]
 }

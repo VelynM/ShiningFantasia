@@ -1,4 +1,4 @@
-import { ResourceEntry, ResourceType } from './database';
+import { ResourceEntry, ResourceType } from '@common/database';
 import {
     Resource,
     ChunkedResource,
@@ -6,11 +6,11 @@ import {
     EntityList,
     EventMessage,
     ItemDatabase,
-    XiString
-} from './resources';
+    XiString,
+} from '@common/resources';
 
-import { dumpBin } from './util';
-export { dumpBinToStr } from './util';
+import { dumpBin } from '@common/util';
+export { dumpBinToStr } from '@common/util';
 
 export async function readFile(fileId: number): Promise<Buffer> {
     return window.ipcApi.readResource(fileId);

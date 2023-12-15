@@ -29,6 +29,7 @@
         "importDeclaration.forceMultiLine": false
     },
     "json": {
+        "indentWidth": 2,
         "trailingCommas": "never"
     },
     "excludes": [

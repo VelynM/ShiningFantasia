@@ -15,7 +15,7 @@ import { defineComponent, PropType } from 'vue';
 
 import { Resource, ChunkedResource, Bmp2 } from '@common/resources';
 
-import { dumpBinToStr } from '@common/datloader';
+import { dumpBinToStr } from '../datloader';
 
 export default defineComponent({
     created() {
