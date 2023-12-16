@@ -13,6 +13,11 @@
 2. From a command prompt, in the ShiningFantasia directory, run `npm install`
 3. `npx vite-node ./src/commands/<command>.ts <parameters>`
 
+## How to use the command line utilities, the deno way (rough sketch, experimental)
+
+1. Download and install [deno](https://deno.com)
+2. `deno --unstable-sloppy-imports run --allow-read --allow-write ./src/commands/<command>.ts <parameters>`
+
 ## How to use the Electron application
 
 I am undecided whether or not to keep the Electron application, so it may not exist in the future.

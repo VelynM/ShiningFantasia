@@ -1,4 +1,5 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import process from 'node:process';
 
 import { lsb32 } from '../common/bytes';
 import { encode as encodeMgc_ } from '../common/mgc-decode';

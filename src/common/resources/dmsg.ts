@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 import { lsb16, lsb32 } from '../bytes';
 import { decodeString, encodeString } from '../string';
 import { Resource } from './resource';

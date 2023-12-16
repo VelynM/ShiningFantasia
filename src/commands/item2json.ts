@@ -1,4 +1,5 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import process from 'node:process';
 
 import { ItemDatabase } from '../common/resources/item';
 

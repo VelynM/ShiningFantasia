@@ -15,13 +15,15 @@ const { VueLoaderPlugin } = require('vue-loader');
 
 function getHtmlPlugins(production, entries) {
     const plugins = [];
-    for (const {entry, template, filename} of entries) {
-        plugins.push(new HtmlWebpackPlugin({
-            filename: filename,
-            template: template,
-            chunks: entry,
-            production: production,
-        }));
+    for (const { entry, template, filename } of entries) {
+        plugins.push(
+            new HtmlWebpackPlugin({
+                filename: filename,
+                template: template,
+                chunks: entry,
+                production: production,
+            }),
+        );
     }
 
     return plugins;
@@ -44,25 +46,24 @@ function getTarget({ production, target, entry, output, templates, tsconfig, use
                         name: 'styles',
                         test: /\.css$/,
                         chunks: 'all',
-                        enforce: true
-                    }
-                }
-            }
+                        enforce: true,
+                    },
+                },
+            },
         },
         module: {
             rules: [
-                useESBuildLoader ?
-                    {
+                useESBuildLoader
+                    ? {
                         test: /\.tsx?$/i,
                         loader: 'esbuild-loader',
                         options: {
                             loader: 'ts',
                             target: 'es2022',
                         },
-                        exclude: /node_modules/
+                        exclude: /node_modules/,
                     }
-                :
-                    {
+                    : {
                         test: /\.tsx?$/i,
                         loader: 'ts-loader',
                         options: {
@@ -72,8 +73,8 @@ function getTarget({ production, target, entry, output, templates, tsconfig, use
                         exclude: /node_modules/,
                     },
                 {
-                  test: /\.vue$/i,
-                  loader: 'vue-loader',
+                    test: /\.vue$/i,
+                    loader: 'vue-loader',
                 },
                 {
                     test: /\.css$/i,
@@ -81,7 +82,7 @@ function getTarget({ production, target, entry, output, templates, tsconfig, use
                         MiniCssExtractPlugin.loader,
                         // 'vue-style-loader',
                         'css-loader',
-                    ]
+                    ],
                 },
                 {
                     test: /\.s[ac]ss$/i,
@@ -94,10 +95,10 @@ function getTarget({ production, target, entry, output, templates, tsconfig, use
                             options: {
                                 sassOptions: {
                                     indentedSyntax: true,
-                                }
+                                },
                             },
-                        }
-                    ]
+                        },
+                    ],
                 },
                 {
                     test: /\.(vert|frag|glsl)$/i,
@@ -112,15 +113,26 @@ function getTarget({ production, target, entry, output, templates, tsconfig, use
                     enforce: 'pre',
                     use: [
                         'source-map-loader',
-                    ]
-                }
-            ]
+                    ],
+                },
+            ],
         },
         plugins: [
             new webpack.ProgressPlugin(),
         ],
         devtool: 'source-map',
     };
+
+    if (t?.output?.library?.type === 'module') {
+        t.experiments = {
+            outputModule: true,
+        };
+
+        t.externals = {
+            'node:fs': 'node:fs',
+            'node:process': 'node:process',
+        };
+    }
 
     if (production) {
         delete t.devtool;
@@ -136,15 +148,14 @@ function getTarget({ production, target, entry, output, templates, tsconfig, use
         };
 
         if (production) {
-            t.optimization.minimize = true
+            t.optimization.minimize = true;
             t.optimization.minimizer = [
-                useESBuildMinify ?
-                    new EsbuildPlugin({
+                useESBuildMinify
+                    ? new EsbuildPlugin({
                         target: 'es2022',
                         css: true,
                     })
-                :
-                    new TerserPlugin({
+                    : new TerserPlugin({
                         extractComments: false,
                         terserOptions: {
                             format: {
@@ -170,11 +181,11 @@ function getTarget({ production, target, entry, output, templates, tsconfig, use
             new MiniCssExtractPlugin(),
             new PurgeCSSPlugin({
                 paths: glob.sync(`${path.resolve(__dirname, './src')}/**/*`, {
-                    nodir: true
+                    nodir: true,
                 }),
                 defaultExtractor(content) {
-                    const contentWithoutStyleBlocks = content.replace(/<style[^]+?<\/style>/gi, '')
-                    return contentWithoutStyleBlocks.match(/[A-Za-z0-9-_/:]*[A-Za-z0-9-_/]+/g) || []
+                    const contentWithoutStyleBlocks = content.replace(/<style[^]+?<\/style>/gi, '');
+                    return contentWithoutStyleBlocks.match(/[A-Za-z0-9-_/:]*[A-Za-z0-9-_/]+/g) || [];
                 },
                 safelist: [/-(leave|enter|appear)(|-(to|from|active))$/, /^(?!(|.*?:)cursor-move).+-move$/, /^router-link(|-exact)-active$/, /data-v-.*/],
             }),
@@ -201,7 +212,7 @@ module.exports = function (env, argv) {
             plugins: [
                 new CleanWebpackPlugin(),
             ],
-        }
+        },
     ];
 
     if (distBuild) {
@@ -228,22 +239,30 @@ module.exports = function (env, argv) {
         'comm2json',
         'json2comm',
         'merit2json',
-        'json2merit'].map(c => getTarget({
+        'json2merit',
+    ].map(c =>
+        getTarget({
             production,
-            target: 'node',
-            entry: {index: `./src/commands/${c}.ts`},
-            output: {path: path.resolve(__dirname, `./build/commands/${c}`)},
+            target: 'es2022',
+            entry: { index: `./src/commands/${c}.ts` },
+            output: {
+                library: {
+                    type: 'module',
+                },
+                path: path.resolve(__dirname, `./build/commands/${c}`),
+            },
             tsconfig: path.resolve(__dirname, 'src/commands/tsconfig.json'),
             useESBuildLoader,
             useESBuildMinify,
-        }));
+        })
+    );
 
     return targets.concat([
         getTarget({
             production,
             target: 'electron-main',
-            entry: {main: './src/main/main.ts'},
-            output: {path: path.resolve(__dirname, './build/main/')},
+            entry: { main: './src/main/main.ts' },
+            output: { path: path.resolve(__dirname, './build/main/') },
             templates: null,
             tsconfig: path.resolve(__dirname, 'tsconfig.json'),
             useESBuildLoader,
@@ -252,8 +271,8 @@ module.exports = function (env, argv) {
         getTarget({
             production,
             target: 'electron-preload',
-            entry: {preload: './src/preload/preload.ts'},
-            output: {path: path.resolve(__dirname, './build/preload/')},
+            entry: { preload: './src/preload/preload.ts' },
+            output: { path: path.resolve(__dirname, './build/preload/') },
             templates: null,
             tsconfig: path.resolve(__dirname, 'src/preload/tsconfig.json'),
             useESBuildLoader,
@@ -264,14 +283,14 @@ module.exports = function (env, argv) {
             // Build as web instead of electron-renderer as
             // nodeIntegration is turned off.
             target: 'web',
-            entry: {index: './src/renderer/renderer.ts'},
-            output: {path: path.resolve(__dirname, './build/renderer/')},
+            entry: { index: './src/renderer/renderer.ts' },
+            output: { path: path.resolve(__dirname, './build/renderer/') },
             templates: [
                 {
                     entry: ['index'],
                     template: 'src/templates/index.html',
                     filename: 'index.html',
-                }
+                },
             ],
             tsconfig: path.resolve(__dirname, 'src/renderer/tsconfig.json'),
             useESBuildLoader,
@@ -280,4 +299,4 @@ module.exports = function (env, argv) {
 
         ...commands,
     ]);
-}
+};

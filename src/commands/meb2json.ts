@@ -1,4 +1,5 @@
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
+import process from 'node:process';
 
 import { ChunkedResource, ChunkedResourceType } from '../common/resources';
 
