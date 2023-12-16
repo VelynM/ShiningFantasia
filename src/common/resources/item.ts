@@ -83,15 +83,15 @@ const ItemFieldTypes: Record<string, ItemFieldType> = {
     _unk49: ItemFieldType.U32,
     _unk50: ItemFieldType.U32,
     _unk51: ItemFieldType.U32, // ???
-    _unk52: ItemFieldType.U8,
+    aoeModifier: ItemFieldType.U8,
     _unk53: ItemFieldType.U8,
     _unk54: ItemFieldType.U24, // ???
     _unk55: ItemFieldType.U16,
     _unk56: ItemFieldType.U16,
     _unk57: ItemFieldType.U32,
-    _unk58: ItemFieldType.U8,
-    _unk59: ItemFieldType.U8,
-    _unk60: ItemFieldType.U8,
+    radius: ItemFieldType.U8,
+    aoeType: ItemFieldType.U8,
+    validTargets: ItemFieldType.U8,
 };
 
 export class Item {
@@ -151,15 +151,15 @@ export class Item {
     _unk49?: number;
     _unk50?: number;
     _unk51?: number;
-    _unk52?: number;
+    aoeModifier?: number;
     _unk53?: number;
     _unk54?: number;
     _unk55?: number;
     _unk56?: number;
     _unk57?: number;
-    _unk58?: number;
-    _unk59?: number;
-    _unk60?: number;
+    radius?: number;
+    aoeType?: number;
+    validTargets?: number;
 
     iconTexture?: Bmp2 | null;
     iconTextureBase64?: string;
@@ -307,9 +307,9 @@ export class ItemType1 extends Item {
         this._unk32 = lsb16(b, 0x10);
         this._unk40 = lsb8(b, 0x13);
         this._unk41 = lsb16(b, 0x14);
-        this._unk58 = lsb8(b, 0x16);
-        this._unk59 = lsb8(b, 0x17);
-        this._unk60 = lsb8(b, 0x18);
+        this.radius = lsb8(b, 0x16);
+        this.aoeType = lsb8(b, 0x17);
+        this.validTargets = lsb8(b, 0x18);
 
         this.initIcon(b, 0x280);
     }
@@ -327,9 +327,9 @@ export class ItemType1 extends Item {
             _unk32: 0x10,
             _unk40: 0x13,
             _unk41: 0x14,
-            _unk58: 0x16,
-            _unk59: 0x17,
-            _unk60: 0x18,
+            radius: 0x16,
+            aoeType: 0x17,
+            validTargets: 0x18,
         });
 
     }
@@ -395,10 +395,10 @@ export class Armor extends Item {
         this._unk32 = lsb16(b, 0x24);
         this._unk38 = lsb8(b, 0x27);
         this.ilvl = lsb8(b, 0x26);
-        this._unk52 = lsb8(b, 0x28);
-        this._unk58 = lsb8(b, 0x29);
-        this._unk59 = lsb8(b, 0x2a);
-        this._unk60 = lsb8(b, 0x2b);
+        this.aoeModifier = lsb8(b, 0x28);
+        this.radius = lsb8(b, 0x29);
+        this.aoeType = lsb8(b, 0x2a);
+        this.validTargets = lsb8(b, 0x2b);
 
         this.initIcon(b, 0x280);
     }
@@ -425,10 +425,10 @@ export class Armor extends Item {
             _unk32: 0x24,
             _unk38: 0x27,
             ilvl: 0x26,
-            _unk52: 0x28,
-            _unk58: 0x29,
-            _unk59: 0x2a,
-            _unk60: 0x2b,
+            aoeModifier: 0x28,
+            radius: 0x29,
+            aoeType: 0x2a,
+            validTargets: 0x2b,
         });
     }
 }
@@ -461,10 +461,10 @@ export class Weapon extends Item {
         this._unk32 = lsb16(b, 0x30);
         this._unk38 = lsb8(b, 0x33);
         this.ilvl = lsb8(b, 0x32);
-        this._unk52 = lsb8(b, 0x34);
-        this._unk58 = lsb8(b, 0x35);
-        this._unk59 = lsb8(b, 0x36);
-        this._unk60 = lsb8(b, 0x37);
+        this.aoeModifier = lsb8(b, 0x34);
+        this.radius = lsb8(b, 0x35);
+        this.aoeType = lsb8(b, 0x36);
+        this.validTargets = lsb8(b, 0x37);
 
         this.initIcon(b, 0x280);
     }
@@ -495,10 +495,10 @@ export class Weapon extends Item {
             _unk32: 0x30,
             _unk38: 0x33,
             ilvl: 0x32,
-            _unk52: 0x34,
-            _unk58: 0x35,
-            _unk59: 0x36,
-            _unk60: 0x37,
+            aoeModifier: 0x34,
+            radius: 0x35,
+            aoeType: 0x36,
+            validTargets: 0x37,
     });
 /*
         b.writeUInt16LE(item.kind!, 8);
@@ -525,10 +525,10 @@ export class Weapon extends Item {
         b.writeUInt16LE(item._unk32!, 0x30);
         b.writeUInt8(item._unk38!, 0x33);
         b.writeUInt8(item.ilvl!, 0x32);
-        b.writeUInt8(item._unk52!, 0x34);
-        b.writeUInt8(item._unk58!, 0x35);
-        b.writeUInt8(item._unk59!, 0x36);
-        b.writeUInt8(item._unk60!, 0x37);
+        b.writeUInt8(item.aoeModifier!, 0x34);
+        b.writeUInt8(item.radius!, 0x35);
+        b.writeUInt8(item.aoeType!, 0x36);
+        b.writeUInt8(item.validTargets!, 0x37);
 */
     }
 }

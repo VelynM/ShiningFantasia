@@ -168,7 +168,7 @@ const skillNames = {
 }
 
 function flagBitsToArray(bits: number): string[] {
-    const flags = [];
+    const flags: string[] = [];
 
     for (const [flag, bit] of Object.entries(flagBits)) {
         if ((bit & bits) !== 0) {
@@ -180,7 +180,7 @@ function flagBitsToArray(bits: number): string[] {
 }
 
 function jobBitsToArray(bits: number): string[] {
-    const jobs = [];
+    const jobs: string[] = [];
 
     for (const [job, bit] of Object.entries(jobBits)) {
         if ((bit & bits) !== 0) {
@@ -192,7 +192,7 @@ function jobBitsToArray(bits: number): string[] {
 }
 
 function raceBitsToArray(bits: number): string[] {
-    const races = [];
+    const races: string[] = [];
 
     for (const [race, bit] of Object.entries(raceBits)) {
         if ((bit & bits) !== 0) {
@@ -204,7 +204,7 @@ function raceBitsToArray(bits: number): string[] {
 }
 
 function slotBitsToArray(bits: number): string[] {
-    const slots = [];
+    const slots: string[] = [];
 
     for (const [slot, bit] of Object.entries(slotBits)) {
         if ((bit & bits) !== 0) {
@@ -275,26 +275,27 @@ const fieldNames = [
     '_unk49',
     '_unk50',
     '_unk51',
-    '_unk52',
+    'aoeModifier',
     '_unk53',
     '_unk54',
     '_unk55',
     '_unk56',
     '_unk57',
-    '_unk58',
-    '_unk59',
-    '_unk60',
+    'radius',
+    'aoeType',
+    'validTargets',
     'iconTextureBase64',
 ];
 
 // todo
-// _unk52 - aoeModifier
+// aoeModifier
 // 1: YAGRUSH
 // 2: EPEOLATRY
 // 3: LUZAFS_RING
 // 4: STRING_INSTRUMENT
+// 5: YAGYU_DARKBLADE
 
-const itemList = [];
+const itemList: Array<any> = [];
 
 for (let i = 0; i < jItems.entries.length; i++) {
     const jItem = jItems.entries[i];

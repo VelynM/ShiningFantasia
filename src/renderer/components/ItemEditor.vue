@@ -351,10 +351,10 @@
                     </tr>
                 </template>
 
-                <template v-if="item?._unk52 !== undefined">
+                <template v-if="item?.aoeModifier !== undefined">
                     <tr>
-                        <td>_unk52</td>
-                        <td>{{ _02X(item._unk52) }}</td>
+                        <td>aoeModifier</td>
+                        <td>{{ _02X(item.aoeModifier) }}</td>
                     </tr>
                 </template>
 
@@ -393,24 +393,24 @@
                     </tr>
                 </template>
 
-                <template v-if="item?._unk58 !== undefined">
+                <template v-if="item?.radius !== undefined">
                     <tr>
-                        <td>_unk58</td>
-                        <td>{{ _02X(item._unk58) }}</td>
+                        <td>radius</td>
+                        <td>{{ _02X(item.radius) }}</td>
                     </tr>
                 </template>
 
-                <template v-if="item?._unk59 !== undefined">
+                <template v-if="item?.aoeType !== undefined">
                     <tr>
-                        <td>_unk59</td>
-                        <td>{{ _02X(item._unk59) }}</td>
+                        <td>aoeType</td>
+                        <td>{{ _02X(item.aoeType) }}</td>
                     </tr>
                 </template>
 
-                <template v-if="item?._unk60 !== undefined">
+                <template v-if="item?.validTargets !== undefined">
                     <tr>
-                        <td>_unk60</td>
-                        <td>{{ _02X(item._unk60) }}</td>
+                        <td>validTargets</td>
+                        <td>{{ _02X(item.validTargets) }}</td>
                     </tr>
                 </template>
             </tbody>

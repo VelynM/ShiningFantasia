@@ -186,69 +186,6 @@ function stringToSkill(skill: string): number {
     return parseInt(skill, 10);
 }
 
-///
-const fieldNames = [
-    'id',
-    'type',
-    'kind',
-    'text',
-    'flags',
-    'stack',
-    'targets',
-    'level',
-    'slots',
-    'races',
-    'jobs',
-    'slvl',
-    'skill',
-    '_unk15',
-    '_unk16',
-    'shieldSize',
-    'dmg',
-    'delay',
-    'dps',
-    '_unk21',
-    '_unk23',
-    '_unk24',
-    'emote',
-    '_unk26',
-    '_unk27',
-    '_unk28',
-    '_unk29',
-    '_unk30',
-    '_unk31',
-    '_unk32',
-    '_unk33',
-    '_unk34',
-    '_unk35',
-    '_unk36',
-    '_unk37',
-    '_unk38',
-    'ilvl',
-    '_unk40',
-    '_unk41',
-    '_unk42',
-    '_unk43',
-    '_unk44',
-    '_unk45',
-    '_unk46',
-    '_unk47',
-    '_unk48',
-    '_unk49',
-    '_unk50',
-    '_unk51',
-    '_unk52',
-    '_unk53',
-    '_unk54',
-    '_unk55',
-    '_unk56',
-    '_unk57',
-    '_unk58',
-    '_unk59',
-    '_unk60',
-    'iconTextureBase64',
-];
-
 if (process.argv.length != 5) {
     console.error('Incorrect command line arguments!');
     process.exit(1);
@@ -261,6 +198,14 @@ const itemsJson = JSON.parse(jsonData);
 const eDats: Item[] = [];
 const jDats: Item[] = [];
 
+// Backwards compatibility for older field names
+const fieldRenames: Record<string, string> = {
+    '_unk52': 'aoeModifier',
+    '_unk58': 'radius',
+    '_unk59': 'aoeType',
+    '_unk60': 'validTargets'
+};
+
 for (let i = 0; i < itemsJson.length; i++) {
 
     const item = itemsJson[i];
@@ -268,7 +213,13 @@ for (let i = 0; i < itemsJson.length; i++) {
     let eItem: any = {};
     let jItem: any = {};
 
-    for (const field of Object.keys(item)) {
+    for (let field of Object.keys(item)) {
+        const rename = fieldRenames[field];
+        if (rename) {
+            item[rename] = item[field];
+            field = rename;
+        }
+
         if (field === 'englishText') {
             eItem.text = item.englishText;
         } else if (field == 'japaneseText') {
@@ -284,15 +235,20 @@ for (let i = 0; i < itemsJson.length; i++) {
         } else if (field === 'skill') {
             item.skill = stringToSkill(item.skill!);
         }
+
     }
 
     delete item.englishText;
     delete item.japaneseText;
 
+    // delete old field names
+    for (const field of Object.keys(fieldRenames)) {
+        delete item[field];
+    }
+
     eItem = { ...item, ...eItem };
     jItem = { ...item, ...jItem };
 
-    // YOLO
     eDats.push(eItem);
     jDats.push(jItem);
 }
