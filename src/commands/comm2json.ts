@@ -25,7 +25,7 @@ const targetBits: Record<number, string> = {
 };
 
 function getTargets(bits: number): string[] {
-    const flags = [];
+    const flags: string[] = [];
 
     for (let i = 0; i < 16; i++) {
         if (((1 << i) & bits) !== 0) {

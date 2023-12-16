@@ -15,7 +15,7 @@ if (process.argv.length === 5) {
     const jXiString = new XiString(jDat);
     const eXiString = new XiString(eDat);
 
-    const xistringJson = [];
+    const xistringJson: Array<Record<string, any>> = [];
 
     const numEntries = Math.max(jXiString.entries.length, eXiString.entries.length);
 
@@ -37,7 +37,7 @@ if (process.argv.length === 5) {
 
     const eXiString = new XiString(eDat);
 
-    const xistringJson = [];
+    const xistringJson: Array<Record<string, any>> = [];
 
     const numEntries = eXiString.entries.length;
 

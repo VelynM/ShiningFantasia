@@ -78,7 +78,7 @@ const targetBits: Record<number, string> = {
 };
 
 function getTargets(bits: number): string[] {
-    const flags = [];
+    const flags: string[] = [];
 
     for (let i = 0; i < 16; i++) {
         if (((1 << i) & bits) !== 0) {
@@ -194,7 +194,7 @@ const modifierNames: Record<number, string> = {
 };
 
 function getModifiers(bits: number): string[] {
-    const flags = [];
+    const flags: string[] = [];
 
     for (let i = 0; i < 8; i++) {
         if (((1 << i) & bits) !== 0) {
@@ -367,7 +367,7 @@ const jobBits = {
 };
 
 function jobBitsToArray(bits: number): string[] {
-    const jobs = [];
+    const jobs: string[] = [];
 
     for (const [job, bit] of Object.entries(jobBits)) {
         if ((bit & bits) !== 0) {

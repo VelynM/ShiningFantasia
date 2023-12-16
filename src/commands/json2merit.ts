@@ -32,7 +32,7 @@ const jobBits: Record<string, number> = {
 };
 
 function jobBitsToArray(bits: number): string[] {
-    const jobs = [];
+    const jobs: string[] = [];
 
     for (const [job, bit] of Object.entries(jobBits)) {
         if ((bit & bits) !== 0) {
